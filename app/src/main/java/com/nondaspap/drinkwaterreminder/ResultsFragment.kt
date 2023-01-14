@@ -123,8 +123,13 @@ class ResultsFragment : Fragment() {
 
 
         sendNotificationsButton.setOnClickListener {
+            var reminder = Reminder(wakeUpTimeSpinner.selectedItem.toString(),
+                                    sleepTimeSpinner.selectedItem.toString(),
+                                    remindersSpinner.selectedItem.toString().toInt())
 
-        }
+            reminder.setReminderSchedule()
+
+            }
         }
     }
 

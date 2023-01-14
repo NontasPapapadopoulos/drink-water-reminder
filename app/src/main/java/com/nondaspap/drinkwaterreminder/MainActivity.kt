@@ -1,5 +1,7 @@
 package com.nondaspap.drinkwaterreminder
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -21,8 +23,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var femaleRadioButton: RadioButton
     private lateinit var submitButton: Button
     private lateinit var enableNotificationsSwitchCompat: SwitchCompat
+    lateinit var sharedPreferences: SharedPreferences
 
     private var gender = Gender.MALE
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,8 +35,9 @@ class MainActivity : AppCompatActivity() {
 
         initComponents()
         submitButton.isClickable = false
-
+       // getSavedData()
         attatchListeners()
+        enableSubmitButton()
     }
 
     private fun initComponents() {
@@ -94,6 +99,9 @@ class MainActivity : AppCompatActivity() {
         var calculator = WaterConsumptionCalculator(weightEditText.text.toString().toInt(),
                                                     workoutMinutesEditText.text.toString().toInt(),
                                                     gender)
+
+        saveData()
+
         val fragmentManager: FragmentManager = supportFragmentManager
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
         val fragment = ResultsFragment()
@@ -107,5 +115,37 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
 
+    }
+
+
+    private fun saveData() {
+        sharedPreferences = this.getSharedPreferences("saveData", Context.MODE_PRIVATE)
+
+        val editor = sharedPreferences.edit()
+        editor.putString("weight", weightEditText.text.toString())
+        editor.putString("workoutMinutes", workoutMinutesEditText.text.toString())
+        editor.putString("selectedGender", gender.toString())
+        editor.putBoolean("enableNotifications", enableNotificationsSwitchCompat.isChecked)
+        editor.commit()
+    }
+
+    private fun getSavedData() {
+        sharedPreferences = this.getSharedPreferences("saveData", Context.MODE_PRIVATE)
+
+        weightEditText.text = Editable.Factory.getInstance().newEditable(sharedPreferences.getString("weight", ""))
+        workoutMinutesEditText.text = Editable.Factory.getInstance().newEditable(sharedPreferences.getString("workoutMinutes", ""))
+        enableNotificationsSwitchCompat.isChecked = sharedPreferences.getBoolean("enableNotifications", true)
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getSavedData()
+        navigateToRemindersIfUserHasEnableNotifications()
+    }
+
+    private fun navigateToRemindersIfUserHasEnableNotifications() {
+        if (enableNotificationsSwitchCompat.isChecked)
+            submitData()
     }
 }
