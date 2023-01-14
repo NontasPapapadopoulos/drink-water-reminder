@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var maleRadioButton: RadioButton
     private lateinit var femaleRadioButton: RadioButton
     private lateinit var submitButton: Button
+    private lateinit var enableNotificationsSwitchCompat: SwitchCompat
 
     private var gender = Gender.MALE
 
@@ -40,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         this.femaleRadioButton = findViewById(R.id.femaleRadioButton)
         this.submitButton = findViewById(R.id.submitButton)
         this.radioGroup = findViewById(R.id.radioGroup)
+        this.enableNotificationsSwitchCompat = findViewById(R.id.enableNotifications)
     }
 
 
@@ -97,6 +100,7 @@ class MainActivity : AppCompatActivity() {
 
         val bundle = Bundle()
         bundle.putSerializable("calculator", calculator )
+        bundle.putBoolean("enableNotifications", enableNotificationsSwitchCompat.isChecked)
 
         fragment.arguments = bundle
         fragmentTransaction.add(R.id.frame, fragment)
