@@ -1,7 +1,6 @@
 package com.nondaspap.drinkwaterreminder
 
-import android.content.Intent
-import android.opengl.Visibility
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +12,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 
 
 class ResultsFragment : Fragment() {
@@ -27,6 +27,7 @@ class ResultsFragment : Fragment() {
     private lateinit var timeSleepTextView:TextView
     private lateinit var remidersTextView:TextView
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -117,6 +118,7 @@ class ResultsFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun attatchListeners() {
         calculateAgainButton.setOnClickListener {
             activity?.supportFragmentManager?.popBackStack()
@@ -125,10 +127,10 @@ class ResultsFragment : Fragment() {
         sendNotificationsButton.setOnClickListener {
             var reminder = Reminder(wakeUpTimeSpinner.selectedItem.toString(),
                                     sleepTimeSpinner.selectedItem.toString(),
-                                    remindersSpinner.selectedItem.toString().toInt())
+                                    remindersSpinner.selectedItem.toString().toInt(),
+                                    this.context)
 
             reminder.setReminderSchedule()
-
             }
         }
     }

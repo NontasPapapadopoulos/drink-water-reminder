@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
 
         initComponents()
         submitButton.isClickable = false
-       // getSavedData()
         attatchListeners()
         enableSubmitButton()
     }
