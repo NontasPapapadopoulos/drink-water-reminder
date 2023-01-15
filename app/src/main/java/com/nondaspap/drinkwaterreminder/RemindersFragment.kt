@@ -178,7 +178,6 @@ class RemindersFragment : Fragment() {
             )
             reminder.setReminderSchedule()
         }
-
     }
 
 }

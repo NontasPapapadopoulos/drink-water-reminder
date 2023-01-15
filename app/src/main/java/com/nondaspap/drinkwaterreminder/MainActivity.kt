@@ -76,7 +76,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-
         radioGroup.setOnCheckedChangeListener(
             RadioGroup.OnCheckedChangeListener { group, checkedId ->
             if (checkedId == R.id.femaleRadioButton)
