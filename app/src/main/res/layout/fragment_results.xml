@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#00BCD4"
-    tools:context=".ResultsFragment">
+    tools:context=".RemindersFragment">
 
     <TextView
         android:id="@+id/resultsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:text="You must drink ___ liters of Water"
         android:textColor="#150101"
         android:textSize="20sp"
@@ -30,28 +30,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/resultsTextView" />
 
-    <Button
-        android:id="@+id/sendNotificationsButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="send me reminders"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calculateAgainButton" />
 
     <TextView
         android:id="@+id/timeWakeUpTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="30dp"
         android:text="What time do you wake up"
         android:textColor="#150101"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sendNotificationsButton"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/calculateAgainButton" />
 
     <Spinner
         android:id="@+id/wakeUpTimeSpinner"
@@ -113,5 +103,79 @@
         app:layout_constraintTop_toBottomOf="@+id/remidersTextView"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"/>
+
+    <TextView
+        android:id="@+id/snackReminderTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Do you want reminders for fruits &amp; snacks?"
+        android:textColor="#150101"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/remindersSpinner"
+        />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/snackReminderTextView">
+
+        <RadioButton
+            android:id="@+id/noRadioButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:checked="true"
+            android:buttonTint="#E91E63"
+            android:text="NO" />
+
+        <RadioButton
+            android:id="@+id/yesRadioButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:buttonTint="#E91E63"
+            android:text="YES" />
+    </RadioGroup>
+
+    <Spinner
+        android:id="@+id/firstSnackReminderSpinner"
+        android:layout_width="300dp"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"/>
+
+
+    <Spinner
+        android:id="@+id/secondSnackReminderSpinner"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/firstSnackReminderSpinner"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"/>
+
+    <Button
+        android:id="@+id/sendNotificationsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Save reminders"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/secondSnackReminderSpinner" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

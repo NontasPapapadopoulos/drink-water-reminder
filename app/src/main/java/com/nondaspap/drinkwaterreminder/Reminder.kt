@@ -9,41 +9,51 @@ import com.nondaspap.drinkwaterreminder.TimeUtil.Companion.convertStringTimeToLo
 class Reminder(
     val wakeUpTime:String,
     val sleepTime: String,
-    val reminders: Int,
+    val waterReminders: Int,
+    val firstSnackReminder: String,
+    val secondSnackReminder:String,
     val context: Context?
 ) {
 
-    private var remindersList = mutableListOf<String>()
+    private var drinkWaterReminders = mutableListOf<String>()
+    private var snackReminders = mutableListOf<String>()
     lateinit var sharedPreferences: SharedPreferences
 
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun setReminderSchedule() {
-        when(reminders) {
-            1 -> remindersList.add(convertStringTimeToLocalTime(wakeUpTime).plusHours(3).toString())
+        when(waterReminders) {
+            1 -> drinkWaterReminders.add(convertStringTimeToLocalTime(wakeUpTime).plusHours(3).toString())
             2 ->  {
-                remindersList.add(convertStringTimeToLocalTime(wakeUpTime).plusHours(3).toString())
-                remindersList.add(convertStringTimeToLocalTime(sleepTime).minusHours(3).toString())
+                drinkWaterReminders.add(convertStringTimeToLocalTime(wakeUpTime).plusHours(3).toString())
+                drinkWaterReminders.add(convertStringTimeToLocalTime(sleepTime).minusHours(3).toString())
             }
             3 -> {
-                remindersList.add(convertStringTimeToLocalTime(wakeUpTime).plusHours(3).toString())
-                remindersList.add(convertStringTimeToLocalTime(wakeUpTime).plusHours(6).toString())
-                remindersList.add(convertStringTimeToLocalTime(sleepTime).minusHours(3).toString())
+                drinkWaterReminders.add(convertStringTimeToLocalTime(wakeUpTime).plusHours(3).toString())
+                drinkWaterReminders.add(convertStringTimeToLocalTime(wakeUpTime).plusHours(6).toString())
+                drinkWaterReminders.add(convertStringTimeToLocalTime(sleepTime).minusHours(3).toString())
             }
             4 -> {
-                remindersList.add(convertStringTimeToLocalTime(wakeUpTime).plusHours(3).toString())
-                remindersList.add(convertStringTimeToLocalTime(wakeUpTime).plusHours(5).toString())
-                remindersList.add(convertStringTimeToLocalTime(wakeUpTime).plusHours(7).toString())
-                remindersList.add(convertStringTimeToLocalTime(sleepTime).minusHours(2).toString())
+                drinkWaterReminders.add(convertStringTimeToLocalTime(wakeUpTime).plusHours(3).toString())
+                drinkWaterReminders.add(convertStringTimeToLocalTime(wakeUpTime).plusHours(5).toString())
+                drinkWaterReminders.add(convertStringTimeToLocalTime(wakeUpTime).plusHours(7).toString())
+                drinkWaterReminders.add(convertStringTimeToLocalTime(sleepTime).minusHours(2).toString())
             }
             5 -> {
-                remindersList.add(convertStringTimeToLocalTime(wakeUpTime).plusHours(3).toString())
-                remindersList.add(convertStringTimeToLocalTime(wakeUpTime).plusHours(5).toString())
-                remindersList.add(convertStringTimeToLocalTime(wakeUpTime).plusHours(7).toString())
-                remindersList.add(convertStringTimeToLocalTime(sleepTime).minusHours(2).toString())
-                remindersList.add(convertStringTimeToLocalTime(sleepTime).minusHours(3).toString())
+                drinkWaterReminders.add(convertStringTimeToLocalTime(wakeUpTime).plusHours(3).toString())
+                drinkWaterReminders.add(convertStringTimeToLocalTime(wakeUpTime).plusHours(5).toString())
+                drinkWaterReminders.add(convertStringTimeToLocalTime(wakeUpTime).plusHours(7).toString())
+                drinkWaterReminders.add(convertStringTimeToLocalTime(sleepTime).minusHours(2).toString())
+                drinkWaterReminders.add(convertStringTimeToLocalTime(sleepTime).minusHours(3).toString())
             }
         }
+
+        if (firstSnackReminder.isNotEmpty() &&
+            secondSnackReminder.isNotEmpty()) {
+            snackReminders.add(firstSnackReminder)
+            snackReminders.add(secondSnackReminder)
+        }
+
         saveTimeNotificationsToSharedPreferences()
     }
 
@@ -51,7 +61,8 @@ class Reminder(
         sharedPreferences = context!!.getSharedPreferences("saveNotifications", Context.MODE_PRIVATE)
 
         val editor = sharedPreferences.edit()
-        editor.putStringSet("notifications", remindersList.toSet())
+        editor.putStringSet("waterNotifications", drinkWaterReminders.toSet())
+        editor.putStringSet("snackNotifications", snackReminders.toSet())
         editor.commit()
     }
 }

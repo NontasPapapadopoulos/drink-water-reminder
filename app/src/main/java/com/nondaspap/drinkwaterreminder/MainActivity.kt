@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity() {
 
         val fragmentManager: FragmentManager = supportFragmentManager
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-        val fragment = ResultsFragment()
+        val fragment = RemindersFragment()
 
         val bundle = Bundle()
         bundle.putSerializable("calculator", calculator )

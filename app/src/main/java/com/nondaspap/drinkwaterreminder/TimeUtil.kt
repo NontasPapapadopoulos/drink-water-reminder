@@ -11,11 +11,8 @@ class TimeUtil {
 
         @RequiresApi(Build.VERSION_CODES.O)
         fun convertStringTimeToLocalTime (time: String): LocalTime {
-            val formatter = DateTimeFormatter.ofPattern("hh:mm")
+            val formatter = DateTimeFormatter.ofPattern("HH:mm")
             return LocalTime.parse(time, formatter)
         }
     }
-
-
-
 }
