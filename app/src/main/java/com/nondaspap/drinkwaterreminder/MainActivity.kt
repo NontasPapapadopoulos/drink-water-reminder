@@ -27,7 +27,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var enableNotificationsSwitchCompat: SwitchCompat
     lateinit var sharedPreferences: SharedPreferences
 
-    private var gender = Gender.MALE
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,12 +81,6 @@ class MainActivity : AppCompatActivity() {
                                        before: Int, count: Int) {}
         })
 
-        radioGroup.setOnCheckedChangeListener(
-            RadioGroup.OnCheckedChangeListener { group, checkedId ->
-            if (checkedId == R.id.femaleRadioButton)
-                gender = Gender.FEMALE
-            })
-
         submitButton.setOnClickListener {
             submitData()
         }
@@ -101,8 +94,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun submitData() {
         val calculator = WaterConsumptionCalculator(weightEditText.text.toString().toInt(),
-                                                    workoutMinutesEditText.text.toString().toInt(),
-                                                    gender)
+                                                    workoutMinutesEditText.text.toString().toInt())
 
         saveData()
 
@@ -128,7 +120,6 @@ class MainActivity : AppCompatActivity() {
         val editor = sharedPreferences.edit()
         editor.putString("weight", weightEditText.text.toString())
         editor.putString("workoutMinutes", workoutMinutesEditText.text.toString())
-        editor.putString("selectedGender", gender.toString())
         editor.putBoolean("enableNotifications", enableNotificationsSwitchCompat.isChecked)
         editor.commit()
     }

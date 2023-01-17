@@ -6,8 +6,7 @@ import java.math.RoundingMode
 import java.text.DecimalFormat
 
 class WaterConsumptionCalculator(val weight: Int,
-                                 val minutesWorkout: Int,
-                                 val gender: Gender) : Serializable {
+                                 val minutesWorkout: Int) : Serializable {
 
     private var KG_TO_POUND =  2.20462
     private var OUNCE_TO_KG = 0.0283495
