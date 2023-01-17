@@ -1,14 +1,8 @@
 package com.nondaspap.drinkwaterreminder
 
-import android.app.AlarmManager
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -16,6 +10,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -33,8 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     private var gender = Gender.MALE
 
-
-
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -44,8 +39,11 @@ class MainActivity : AppCompatActivity() {
         enableNotificationsSwitchCompat.isChecked = false
         attatchListeners()
         enableSubmitButton()
-        createNotificationChannel()
-        registerNotifications()
+        val notificationManager = NotificationHandler(this@MainActivity)
+        notificationManager.createNotificationChannel()
+        notificationManager.registerNotifications()
+        notificationManager.checkIfNotificationsAreSaved()
+        notificationManager.displaySavedNotifications()
     }
 
     private fun initComponents() {
@@ -81,8 +79,7 @@ class MainActivity : AppCompatActivity() {
                                            ount: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence, start: Int,
-                                       before: Int, count: Int) {
-            }
+                                       before: Int, count: Int) {}
         })
 
         radioGroup.setOnCheckedChangeListener(
@@ -103,7 +100,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun submitData() {
-        var calculator = WaterConsumptionCalculator(weightEditText.text.toString().toInt(),
+        val calculator = WaterConsumptionCalculator(weightEditText.text.toString().toInt(),
                                                     workoutMinutesEditText.text.toString().toInt(),
                                                     gender)
 
@@ -148,63 +145,16 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         getSavedData()
-        //navigateToRemindersIfUserHasEnableNotifications()
+        navigateToRemindersIfUserHasEnableNotifications()
     }
 
     private fun navigateToRemindersIfUserHasEnableNotifications() {
-        if (enableNotificationsSwitchCompat.isChecked)
+        sharedPreferences = getSharedPreferences("saveData", Context.MODE_PRIVATE)
+        if (sharedPreferences.getBoolean("enableNotifications", false)) {
+          enableNotificationsSwitchCompat.isChecked = true
             submitData()
-    }
-
-    private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            var channel = NotificationChannel("reminderChannel", "reminderChannel", NotificationManager.IMPORTANCE_HIGH)
-            channel.description = "Description"
-
-            var notificationManager = getSystemService(NotificationManager::class.java)
-            notificationManager.createNotificationChannel(channel)
-        } else {
-            TODO("VERSION.SDK_INT < O")
-        }
+       }
     }
 
 
-    private fun registerNotifications() {
-        sharedPreferences = getSharedPreferences("saveNotifications", Context.MODE_PRIVATE)
-
-        var waterReminders = sharedPreferences.getStringSet("waterNotifications", setOf())
-            if (waterReminders!!.isNotEmpty()) {
-                for (reminder in waterReminders) {
-                    print(reminder)
-                    val intent = Intent(this@MainActivity, ReminderBroadcast::class.java)
-                    intent.putExtra("title", "Time to drink water")
-                    intent.putExtra("text","aaaaa")
-                    val pendingIntent = PendingIntent.getBroadcast(this@MainActivity,
-                                                                    reminder.split(":").get(0).toInt(),
-                                                                    intent, 0)
-
-                    var alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-                    alarmManager.set(AlarmManager.RTC_WAKEUP, 10000 , pendingIntent)
-                }
-            }
-
-
-        var snackReminders = sharedPreferences.getStringSet("snackNotifications", setOf())
-        if (snackReminders!!.isNotEmpty()) {
-            for (reminder in snackReminders) {
-                print(reminder)
-                val intent = Intent(this@MainActivity, ReminderBroadcast::class.java)
-                intent.putExtra("title", "Time for snack")
-                intent.putExtra("text","aaaaa")
-                val pendingIntent = PendingIntent.getBroadcast(this@MainActivity,
-                    reminder.split(":").get(0).toInt(),
-                    intent, 0)
-
-                var alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-                alarmManager.set(AlarmManager.RTC_WAKEUP, 10000 , pendingIntent)
-            }
-        }
-
-
-    }
-    }
+}

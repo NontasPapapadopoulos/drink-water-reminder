@@ -14,5 +14,9 @@ class TimeUtil {
             val formatter = DateTimeFormatter.ofPattern("HH:mm")
             return LocalTime.parse(time, formatter)
         }
+
+        fun convertStringTimeToInteger(time: String): Int {
+            return time.split(":")[0].toInt()
+        }
     }
 }

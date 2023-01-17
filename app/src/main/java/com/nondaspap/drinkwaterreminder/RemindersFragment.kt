@@ -157,7 +157,7 @@ class RemindersFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveNotifications() {
         if (userWantsSnackNotifications) {
-            val reminder = Reminder(
+            val reminder = ReminderScheduler(
                 wakeUpTimeSpinner.selectedItem.toString(),
                 sleepTimeSpinner.selectedItem.toString(),
                 remindersSpinner.selectedItem.toString().toInt(),
@@ -168,7 +168,7 @@ class RemindersFragment : Fragment() {
             reminder.setReminderSchedule()
         }
         else {
-            val reminder = Reminder(
+            val reminder = ReminderScheduler(
                 wakeUpTimeSpinner.selectedItem.toString(),
                 sleepTimeSpinner.selectedItem.toString(),
                 remindersSpinner.selectedItem.toString().toInt(),

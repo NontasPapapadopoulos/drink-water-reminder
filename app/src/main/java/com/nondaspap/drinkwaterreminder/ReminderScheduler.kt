@@ -3,17 +3,19 @@ package com.nondaspap.drinkwaterreminder
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.nondaspap.drinkwaterreminder.TimeUtil.Companion.convertStringTimeToLocalTime
 
-class Reminder(
-    val wakeUpTime:String,
-    val sleepTime: String,
-    val waterReminders: Int,
-    val firstSnackReminder: String,
-    val secondSnackReminder:String,
-    val context: Context?
+class ReminderScheduler(
+    private val wakeUpTime:String,
+    private val sleepTime: String,
+    private val waterReminders: Int,
+    private val firstSnackReminder: String,
+    private val secondSnackReminder:String,
+    private val context: Context?
 ) {
+
 
     private var drinkWaterReminders = mutableListOf<String>()
     private var snackReminders = mutableListOf<String>()
@@ -64,5 +66,18 @@ class Reminder(
         editor.putStringSet("waterNotifications", drinkWaterReminders.toSet())
         editor.putStringSet("snackNotifications", snackReminders.toSet())
         editor.commit()
+    }
+
+    private fun displaySavedNotifications() {
+        sharedPreferences = context!!.getSharedPreferences("saveNotifications", Context.MODE_PRIVATE)
+        val waterNotifications = sharedPreferences.getStringSet("waterNotifications", setOf())
+        val snackNotifications = sharedPreferences.getStringSet("snackNotifications", setOf())
+
+        for (reminder in waterNotifications!!) {
+            Log.d("notifications:","water $reminder")
+        }
+        for (reminder in snackNotifications!!) {
+            Log.d("notifications:","snack $reminder")
+        }
     }
 }
